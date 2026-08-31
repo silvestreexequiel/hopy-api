@@ -1,27 +1,29 @@
 # Academy Operations API
 
-API REST (FastAPI) que expone la operatoria del portal `academy-operations` de
-Escuela Hopi para ser consumida por la app mobile. Se conecta al **mismo MySQL**
-que el portal PHP y reusa la tabla `cleanup_events`.
+REST API (FastAPI) that exposes the operations of the Escuela Hopi
+`academy-operations` portal so it can be consumed by the mobile app. It connects
+to the **same MySQL** used by the PHP portal and reuses the `cleanup_events`
+table.
 
-## Requisitos
+## Requirements
 
 - Python 3.9+
-- Un MySQL alcanzable con el esquema de `academy-operations`
-  (`escuelahopi/academy-operations/sql/init_cleanup_events.sql`). La tabla
-  `cleanup_events` se crea sola en el primer acceso si no existe.
+- A reachable MySQL with the `academy-operations` schema
+  (`escuelahopi/academy-operations/sql/init_cleanup_events.sql`). The
+  `cleanup_events` table is created automatically on first access if it does not
+  exist.
 
-## Configuracion
+## Configuration
 
 ```bash
 cp .env.example .env
-# complete ACADEMY_DB_*, ACADEMY_STAFF_*, ACADEMY_ADMIN_*, OPENAI_*, HOPI_JWT_SECRET
+# fill in ACADEMY_DB_*, ACADEMY_STAFF_*, ACADEMY_ADMIN_*, OPENAI_*, HOPI_JWT_SECRET
 ```
 
-Las variables usan los **mismos nombres** que `escuelahopi/env.php`, de modo que
-se puede compartir la misma configuracion que el portal PHP.
+The variables use the **same names** as `escuelahopi/env.php`, so you can share
+the same configuration as the PHP portal.
 
-## Levantar
+## Run
 
 ```bash
 python3 -m venv .venv
@@ -29,28 +31,35 @@ python3 -m venv .venv
 .venv/bin/uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Docs interactivas: `http://localhost:8000/docs`.
+Interactive docs: `http://localhost:8000/docs`.
 
 ## Endpoints
 
-| Metodo | Ruta | Descripcion |
+| Method | Path | Description |
 | --- | --- | --- |
-| POST | `/api/v1/auth/login` | Login staff, devuelve token de sesion. |
-| GET | `/api/v1/profiles/{id}` | Ficha de un miembro del staff. |
-| GET | `/api/v1/events?q=` | Buscador de eventos de limpieza. |
-| GET | `/api/v1/cleanup/events?page=&per_page=` | Log paginado de eventos. |
-| DELETE | `/api/v1/cleanup/orphans` | Ejecuta limpieza de usuarios huerfanos. |
-| DELETE | `/api/v1/cleanup/logs` | Ejecuta limpieza de logs legacy. |
-| DELETE | `/api/v1/cleanup/cache` | Ejecuta limpieza de cache. |
-| DELETE | `/api/v1/cleanup/reset` | Resetea el log de eventos (basic auth admin). |
-| GET | `/api/v1/admin/overview` | Resumen operativo (requiere sesion admin). |
-| POST | `/api/v1/chat` | Asistente de declaraciones (OpenAI). |
-| GET | `/api/v1/status` | Estado del sistema. |
+| POST | `/api/v1/auth/login` | Staff login, returns a session token. |
+| GET | `/api/v1/profiles/{id}` | Staff member profile. |
+| GET | `/api/v1/events?q=` | Cleanup event search. |
+| GET | `/api/v1/cleanup/events?page=&per_page=` | Paginated event log. |
+| DELETE | `/api/v1/cleanup/orphans` | Runs the orphan-users cleanup. |
+| DELETE | `/api/v1/cleanup/logs` | Runs the legacy-logs cleanup. |
+| DELETE | `/api/v1/cleanup/cache` | Runs the cache cleanup. |
+| DELETE | `/api/v1/cleanup/reset` | Resets the event log (admin basic auth). |
+| GET | `/api/v1/admin/overview` | Operations overview (requires admin session). |
+| POST | `/api/v1/chat` | Statements assistant (OpenAI). |
+| GET | `/api/v1/status` | System status. |
 
-## MySQL rapido para desarrollo
+## Quick MySQL for development
 
 ```bash
 docker run -d --name hopi-mysql -e MYSQL_ROOT_PASSWORD=root \
   -e MYSQL_DATABASE=academy -p 3306:3306 mysql:8
 # .env -> ACADEMY_DB_HOST=127.0.0.1 DB_NAME=academy DB_USER=root DB_PASS=root
 ```
+
+## Deploy (Render)
+
+This repo includes a `render.yaml` blueprint. On Render: **New -> Blueprint**,
+pick the repo, and fill in the `sync:false` environment variables. The service
+starts even without a database (the `/` health check returns 200); only the
+event/cleanup/reset endpoints need MySQL.
