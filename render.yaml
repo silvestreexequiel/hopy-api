@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: hopi-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    envVars:
+      - key: ACADEMY_DB_HOST
+        sync: false
+      - key: ACADEMY_DB_NAME
+        sync: false
+      - key: ACADEMY_DB_USER
+        sync: false
+      - key: ACADEMY_DB_PASS
+        sync: false
+      - key: ACADEMY_DB_CHARSET
+        value: utf8mb4
+      - key: ACADEMY_STAFF_USER
+        sync: false
+      - key: ACADEMY_STAFF_PASS
+        sync: false
+      - key: ACADEMY_ADMIN_USER
+        sync: false
+      - key: ACADEMY_ADMIN_PASS
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
+      - key: HOPI_JWT_SECRET
+        sync: false
