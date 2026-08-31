@@ -1,4 +1,4 @@
-"""Emision y verificacion de tokens de sesion del portal mobile."""
+"""Issuing and verification of the mobile portal session tokens."""
 import base64
 import binascii
 import json
@@ -54,7 +54,7 @@ def decode_token(token):
 
 
 def identity_from_header(authorization):
-    """Extrae las claims de un token Bearer del header Authorization."""
+    """Extracts the claims from a Bearer token in the Authorization header."""
     if not authorization:
         return None
     parts = authorization.split(" ", 1)
@@ -64,7 +64,7 @@ def identity_from_header(authorization):
 
 
 def parse_basic_auth(header):
-    """Devuelve (user, pass) desde una cabecera Authorization: Basic."""
+    """Returns (user, pass) from an Authorization: Basic header."""
     if not header or not header.lower().startswith("basic "):
         return None
     try:

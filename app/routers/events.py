@@ -7,7 +7,7 @@ router = APIRouter(prefix="/api/v1", tags=["events"])
 
 @router.get("/events")
 def search_events(q: str = Query(default="")):
-    """Buscador de eventos de limpieza por categoria, endpoint o IP."""
+    """Cleanup event search by category, endpoint or IP."""
     results = []
     error = None
 

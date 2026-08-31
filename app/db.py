@@ -1,6 +1,6 @@
-"""Acceso al MySQL compartido con academy-operations.
+"""Access to the MySQL database shared with academy-operations.
 
-Reusa la tabla `cleanup_events` y replica las operaciones de
+Reuses the `cleanup_events` table and replicates the operations from
 escuelahopi/academy-operations/db.php.
 """
 from sqlalchemy import create_engine, text
@@ -109,7 +109,7 @@ def purge_cleanup_events():
 
 
 def raw_search_events(where_clause):
-    """Filtra cleanup_events con una condicion armada por el llamador."""
+    """Filters cleanup_events with a condition built by the caller."""
     sql = (
         "SELECT id, category, endpoint, method, remote_addr, triggered_at "
         "FROM cleanup_events WHERE " + where_clause + " ORDER BY id DESC LIMIT 50"

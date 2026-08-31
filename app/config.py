@@ -1,8 +1,8 @@
-"""Carga de configuracion desde variables de entorno.
+"""Configuration loading from environment variables.
 
-Usa los mismos nombres que escuelahopi/env.php para poder compartir el
-.env del portal PHP. Los valores se leen del entorno real o de un archivo
-.env en la raiz del repo de la API.
+Uses the same names as escuelahopi/env.php so the PHP portal's .env can be
+shared. Values are read from the real environment or from a .env file at the
+root of the API repo.
 """
 import os
 from dotenv import load_dotenv
