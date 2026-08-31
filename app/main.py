@@ -48,12 +48,12 @@ API_INDEX = {
 }
 
 
-@app.api_route("/", methods=["GET", "HEAD"])
+@app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
 def root():
     return API_INDEX
 
 
-@app.api_route("/api/v1", methods=["GET", "HEAD"])
-@app.api_route("/api/v1/", methods=["GET", "HEAD"])
+@app.api_route("/api/v1", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/api/v1/", methods=["GET", "HEAD"], include_in_schema=False)
 def api_v1_index():
     return API_INDEX
