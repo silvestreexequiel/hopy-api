@@ -22,7 +22,7 @@ app.include_router(status.router)
 app.include_router(admin.router)
 
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 def root():
     return {
         "service": "Academy Operations API",
