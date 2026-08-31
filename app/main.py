@@ -3,7 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .routers import auth, profiles, events, cleanup, chat, status, admin
 
-app = FastAPI(title="Academy Operations API", version="1.0.0")
+app = FastAPI(
+    title="Academy Operations API",
+    version="1.0.0",
+    docs_url="/api/v1/docs",
+    redoc_url="/api/v1/redoc",
+    openapi_url="/api/v1/openapi.json",
+)
 
 app.add_middleware(
     CORSMiddleware,
